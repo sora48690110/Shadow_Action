@@ -14,7 +14,9 @@ public class destoroy : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.transform.Rotate(new Vector3(0, 0, 5));
+            gameObject.GetComponent<Renderer>().material.color = Color.red;
         }
 
     }

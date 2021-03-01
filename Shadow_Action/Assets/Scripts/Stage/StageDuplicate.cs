@@ -7,11 +7,11 @@ public class StageDuplicate : MonoBehaviour
 {
     //参考サイト
     //https://qiita.com/dynamonda/items/2368c24edef187775bcb
-
+    GameObject obj;
     [SerializeField] GameObject assetComponentOrGameObject;
     GameObject Sample;
-    string assetPath = "Assets/Prefab/StageParent.prefab";
-    string Start_Path = "Assets/Prefab/Stage/StageParent.prefab";
+    string assetPath = "Assets/Resouces/Stage/NextParent.prefab";
+    string Start_Path = "Assets/Resouces/Stage/StageParent.prefab";
     void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -23,8 +23,7 @@ public class StageDuplicate : MonoBehaviour
                 //指定パスの場所にプレハブを更新（パスに.prefab、まで指定すること）
                 Sample = PrefabUtility.LoadPrefabContents(Start_Path);
                 //オブジェクト名から（clone）を消す
-                GameObject obj = Instantiate(Sample);
-                obj.name = Sample.name;
+                obj = Instantiate(Sample);
                 //*********************************
                 
                 break;
@@ -39,13 +38,26 @@ public class StageDuplicate : MonoBehaviour
                 break;
 
         }
-        PrefabUtility.SaveAsPrefabAssetAndConnect(Sample, assetPath, InteractionMode.AutomatedAction);
+        //プレハブの中身更新
+        PrefabUtility.SaveAsPrefabAsset(Sample, assetPath);
         PrefabUtility.UnloadPrefabContents(Sample);
-
+        //******************
 
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Sample = PrefabUtility.LoadPrefabContents(assetPath);
+            Sample.transform.position = obj.transform.position;
+            Sample.transform.rotation = obj.transform.rotation;
+            Sample.transform.localScale = obj.transform.localScale;
+            //プレハブの中身更新
+            PrefabUtility.SaveAsPrefabAssetAndConnect(Sample, assetPath,InteractionMode.AutomatedAction);
+            PrefabUtility.UnloadPrefabContents(Sample);
+            //******************
+        }
+
     }
 }
