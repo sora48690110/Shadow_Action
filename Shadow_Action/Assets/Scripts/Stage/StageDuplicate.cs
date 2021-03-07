@@ -12,13 +12,17 @@ public class StageDuplicate : MonoBehaviour
 
     //プレハブ情報維持
     GameObject Sample;
+    GameObject Sample2;
     GameObject obj;
+    GameObject obj2;
     //****************
 
 
     //プレハブのパス
-    string Start_Path = "Assets/Resouces/Stage/StageParent.prefab";
-    string Next_Path = "Assets/Resouces/Stage/NextParent.prefab";
+    string Start_Path   = "Assets/Resouces/Stage/StageParent.prefab";
+    string Next_Path    = "Assets/Resouces/Stage/NextParent.prefab";
+    string Player_Path  = "Assets/Resouces/Player/Player.prefab";
+    string Player2_Path = "Assets/Resouces/Player/Player2.prefab";
     //*************
 
 
@@ -27,7 +31,6 @@ public class StageDuplicate : MonoBehaviour
     //************************************
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
         //ステージ作成
         Prefab_Instance();
     }
@@ -49,7 +52,10 @@ public class StageDuplicate : MonoBehaviour
         {
             //指定パスのプレハブ読み込み（パスに.prefab、まで指定すること）
             Sample = PrefabUtility.LoadPrefabContents(Start_Path);
-            Instantiate(Sample);
+            obj=Instantiate(Sample);
+            Sample2 = PrefabUtility.LoadPrefabContents(Player_Path);
+            obj2=Instantiate(Sample2);
+            obj2.name = "Player";
             FirstGame = false;
         }
         else
@@ -57,6 +63,9 @@ public class StageDuplicate : MonoBehaviour
             //指定パスのプレハブ読み込み（パスに.prefab、まで指定すること）
             Sample = PrefabUtility.LoadPrefabContents(Next_Path);
             obj = Instantiate(Sample);
+            Sample2 = PrefabUtility.LoadPrefabContents(Player2_Path);
+            obj2=Instantiate(Sample2);
+            obj2.name = "Player";
             //************************************************************
 
 
@@ -89,6 +98,8 @@ public class StageDuplicate : MonoBehaviour
         //プレハブの中身更新
         PrefabUtility.SaveAsPrefabAsset(Sample, Next_Path);
         PrefabUtility.UnloadPrefabContents(Sample);
+        PrefabUtility.SaveAsPrefabAsset(Sample2, Player2_Path);
+        PrefabUtility.UnloadPrefabContents(Sample2);
         //******************
 
 
@@ -97,7 +108,7 @@ public class StageDuplicate : MonoBehaviour
 
 
     //プレハブ更新処理
-    void Prefab_Update()
+    public void Prefab_Update()
     {
         //変更前のプレハブ読み込み
         Sample = PrefabUtility.LoadPrefabContents(Next_Path);
@@ -108,6 +119,11 @@ public class StageDuplicate : MonoBehaviour
         //シーン上にあるプレハブのインスタンス取得
         GameObject[] childGameObjects = obj.GetComponentsInChildren<Transform>().Select(t => t.gameObject).ToArray();
         //****************************************
+
+        Sample2 = PrefabUtility.LoadPrefabContents(Player2_Path);
+        Sample2.transform.position = GameObject.Find("Player").transform.position;
+        Sample2.transform.rotation = GameObject.Find("Player").transform.rotation;
+        Sample2.transform.localScale = GameObject.Find("Player").transform.localScale;
 
 
         //それぞれ位置・回転・サイズの同期
@@ -124,6 +140,8 @@ public class StageDuplicate : MonoBehaviour
         //プレハブの中身更新
         PrefabUtility.SaveAsPrefabAssetAndConnect(Sample, Next_Path, InteractionMode.AutomatedAction);
         PrefabUtility.UnloadPrefabContents(Sample);
+        PrefabUtility.SaveAsPrefabAssetAndConnect(Sample2, Player2_Path, InteractionMode.AutomatedAction);
+        PrefabUtility.UnloadPrefabContents(Sample2);
         //******************
     }
 }

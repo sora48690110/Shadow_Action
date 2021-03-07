@@ -10,6 +10,7 @@ public class StageMovement : MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         NowStage = SceneManager.GetActiveScene().name;
     }
 
@@ -25,6 +26,7 @@ public class StageMovement : MonoBehaviour
     //ステージ切り替え
     void Change_Stage()
     {
+       gameObject.GetComponent<StageDuplicate>().Prefab_Update();
         NowStage = SceneManager.GetActiveScene().name;
         switch (NowStage)
         {
