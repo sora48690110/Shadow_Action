@@ -12,10 +12,7 @@ public class destoroy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            gameObject.transform.Rotate(new Vector3(0, 0, 5));
-        }
+            gameObject.transform.Rotate(new Vector3(0, 0, 1));
 
     }
 }

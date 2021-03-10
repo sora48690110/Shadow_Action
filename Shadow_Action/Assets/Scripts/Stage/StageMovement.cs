@@ -3,22 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
+//ゲームシーン間の移動
 public class StageMovement : MonoBehaviour
 {
-    public string NowStage { get; set; }
-
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-        NowStage = SceneManager.GetActiveScene().name;
-    }
-
+    string NowStage;
+    Vector3 pos;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
+            pos = GameObject.Find("Player").transform.position;
+            SceneManager.sceneLoaded += GameSceneLoaded;
             Change_Stage();
         }
     }
@@ -26,7 +22,6 @@ public class StageMovement : MonoBehaviour
     //ステージ切り替え
     void Change_Stage()
     {
-       gameObject.GetComponent<StageDuplicate>().Prefab_Update();
         NowStage = SceneManager.GetActiveScene().name;
         switch (NowStage)
         {
@@ -39,10 +34,13 @@ public class StageMovement : MonoBehaviour
             default:
                 break;
         }
-        //ステージ反転作成のために無駄に見えるが必要
-        //ステージ切り替えの際にGameDirectorが重複しないように削除
-        SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
-        //********************************************************
     }
     //******************
+
+    private void GameSceneLoaded(Scene next, LoadSceneMode mode)
+    {
+        var gamemanager = GameObject.Find("Player").GetComponent<Player_Con>();
+        gamemanager.Player_Pos(pos);
+        SceneManager.sceneLoaded -= GameSceneLoaded;
+    }
 }
