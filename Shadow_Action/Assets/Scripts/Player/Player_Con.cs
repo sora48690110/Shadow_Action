@@ -1,17 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Player_Con : MonoBehaviour
 {
     float Movement = new float();
     Rigidbody rb;
+    BoxCollider bc;
+    Vector3 pos;
 
-
+    public GameObject gameDirector;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        bc = GetComponent<BoxCollider>();
     }
 
 
@@ -36,6 +38,13 @@ public class Player_Con : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Chara_Jump(500);
+        }
+
+        //すり抜け
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            pos = gameObject.transform.position;
+            bc.enabled = false;
         }
 
     }
@@ -63,8 +72,18 @@ public class Player_Con : MonoBehaviour
     {
         Movement = pos.x;
         gameObject.transform.position=pos;
+        Debug.Log("kokomade");
     }
     //********************
 
+
+    void OnBecameInvisible()
+    {
+        Debug.Log("表示外");
+        //StageMovement stm = GameObject.Find("GameDirector")?.GetComponent<StageMovement>();
+        Debug.Log(gameDirector);
+        if(gameDirector!=null)
+        gameDirector.GetComponent<StageMovement>().Change_Stage(pos);
+    }
 
 }

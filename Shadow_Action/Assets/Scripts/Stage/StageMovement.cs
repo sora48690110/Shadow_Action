@@ -13,17 +13,16 @@ public class StageMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            pos = GameObject.Find("Player").transform.position;
-            SceneManager.sceneLoaded += GameSceneLoaded;
-            Change_Stage();
+            Change_Stage(GameObject.Find("Player").transform.position);
         }
     }
 
     //ステージ切り替え
-    void Change_Stage()
+    public void Change_Stage(Vector3 Player_Pos)
     {
-        NowStage = SceneManager.GetActiveScene().name;
-        switch (NowStage)
+        pos = Player_Pos;
+        SceneManager.sceneLoaded += GameSceneLoaded;
+        switch (SceneManager.GetActiveScene().name)
         {
             case "SampleScene":
                 SceneManager.LoadScene("SampleScene2");
