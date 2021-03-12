@@ -6,40 +6,49 @@ using UnityEngine.SceneManagement;
 //ゲームシーン間の移動
 public class StageMovement : MonoBehaviour
 {
-    string NowStage;
-    Vector3 pos;
+    bool FrontOrBack = true;
+
+
+
+    Quaternion Front_Rotation = new Quaternion(0, 0, 0, 1);
+    Quaternion Back_Rotation = new Quaternion(-1, 0, 0, 0);
+    Vector3 Front_Pos = new Vector3(0, 1, -20);
+    Vector3 Back_Pos = new Vector3(0,1, 20);
+
+    [SerializeField] GameObject MainCamera;
+    [SerializeField] GameObject DirectionalLight;
+    [SerializeField] GameObject Back_Panel;
+    private void Awake()
+    {
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            Change_Stage(GameObject.Find("Player").transform.position);
+            Change_Stage();
         }
     }
 
     //ステージ切り替え
-    public void Change_Stage(Vector3 Player_Pos)
+    public void Change_Stage()
     {
-        pos = Player_Pos;
-        SceneManager.sceneLoaded += GameSceneLoaded;
-        switch (SceneManager.GetActiveScene().name)
+        FrontOrBack = FrontOrBack ? false : true;
+        switch (FrontOrBack)
         {
-            case "SampleScene":
-                SceneManager.LoadScene("SampleScene2");
+            case true:
+                MainCamera.transform.SetPositionAndRotation(Front_Pos, Front_Rotation);
+                DirectionalLight.SetActive(true);
+                Back_Panel.SetActive(false);
                 break;
-            case "SampleScene2":
-                SceneManager.LoadScene("SampleScene");
+            case false:
+                MainCamera.transform.SetPositionAndRotation(Back_Pos, Back_Rotation);
+                DirectionalLight.SetActive(false);
+                Back_Panel.SetActive(true);
                 break;
             default:
                 break;
         }
     }
     //******************
-
-    private void GameSceneLoaded(Scene next, LoadSceneMode mode)
-    {
-        var gamemanager = GameObject.Find("Player").GetComponent<Player_Con>();
-        gamemanager.Player_Pos(pos);
-        SceneManager.sceneLoaded -= GameSceneLoaded;
-    }
 }
