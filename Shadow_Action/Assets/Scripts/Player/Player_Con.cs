@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//プレイヤー処理
 public class Player_Con : MonoBehaviour
 {
     //プレイヤー移動量計算用
@@ -34,6 +35,7 @@ public class Player_Con : MonoBehaviour
 
 
     [SerializeField] GameObject gameDirector;
+    [SerializeField] GameObject result_Canvas;
     [SerializeField] int Jump_Force;
     private void Awake()
     {
@@ -45,6 +47,10 @@ public class Player_Con : MonoBehaviour
 
     private void Update()
     {
+        //時が止まっている間は処理しない
+        if (Mathf.Approximately(Time.timeScale, 0f))
+            return;
+        //******************************
 
         //左移動
         if (Input.GetKey(KeyCode.A))
@@ -90,8 +96,13 @@ public class Player_Con : MonoBehaviour
     //プレイヤー左右移動
     private void Chara_Move(float movement,int Direction)
     {
-        gameObject.transform.position = new Vector2(movement, gameObject.transform.position.y);
-        gameObject.transform.rotation = new Quaternion(0, Direction, 0, 0);
+        //1文を短くするためのもの
+        Vector3 Player_Pos= new Vector3(movement, gameObject.transform.position.y, 0);
+        Quaternion Player_Rot= new Quaternion(0, Direction, 0, 0);
+        //**********************
+
+
+        gameObject.transform.SetPositionAndRotation(Player_Pos, Player_Rot);
     }
     //******************
 
@@ -100,7 +111,6 @@ public class Player_Con : MonoBehaviour
     private void Chara_Jump(float jump_Force)
     {
         rb.AddForce(transform.up * jump_Force);
-
     }
     //******************
 
@@ -117,11 +127,18 @@ public class Player_Con : MonoBehaviour
         Save_Pos = new Vector3(Movement, 0, 0);
         //****************************
 
+
+        //リザルトUI表示
+        //互いに参照しあっている為、いい方法がないか検討中
+        result_Canvas.GetComponent<Result_UI>().Active_Result("Game Over");
+        //**************
+
+
     }
 
 
     //表世界・裏世界の移動時位置同期
-    private void Player_Pos()
+    public void Player_Pos()
     {
         gameObject.transform.position = Save_Pos;
     }
@@ -138,7 +155,7 @@ public class Player_Con : MonoBehaviour
 
 
         //すり抜け不可状態で接地していないとき死亡判定
-        if (!Transparent_Check&&!Ground_Check)
+        if (!Transparent_Check && !Ground_Check)
             Chara_Death();
         //********************************************
 
@@ -146,14 +163,15 @@ public class Player_Con : MonoBehaviour
         //表世界・裏世界切り替え(カメラ反転させてるだけ)
         //実行終了時に出るエラーを防ぐためnullチェック
         else if (gameDirector != null)
+        {
             gameDirector.GetComponent<StageMovement>().Change_Stage();
-        //********************************************
+            //********************************************
 
 
-        //プレイヤーの位置修正
-        Player_Pos();
-        //********************
-
+            //プレイヤーの位置修正
+            Player_Pos();
+            //********************
+        }
     }
 
     //トリガー接触時

@@ -12,7 +12,11 @@ public class destoroy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-            gameObject.transform.Rotate(new Vector3(0, 0, 1));
+        if (Mathf.Approximately(Time.timeScale, 0f))
+        {
+            return;
+        }
+        gameObject.transform.Rotate(new Vector3(0, 0, 1));
 
     }
 }
