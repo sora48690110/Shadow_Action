@@ -88,7 +88,9 @@ public class Player_Con : MonoBehaviour
             Ground_Check = false;
             //**************
         }
-
+        //ギミックにはじかれた際にずれない用
+        Movement = gameObject.transform.position.x;
+        //**********************************
     }
 
 
@@ -124,7 +126,7 @@ public class Player_Con : MonoBehaviour
 
 
         //保存座標をリトライ位置に変更
-        Save_Pos = new Vector3(Movement, 0, 0);
+        Save_Pos = new Vector3(0, 0, 0);
         //****************************
 
 
