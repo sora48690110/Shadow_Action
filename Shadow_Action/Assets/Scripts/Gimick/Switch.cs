@@ -10,9 +10,12 @@ public class Switch : Gimick_Mane
 
     [SerializeField] GameObject Change_Switch;
 
+    //消したい壁
+    [SerializeField] GameObject Guard_Wall;
+
     GameObject gameDirector;
 
-    
+
     void Start()
     {
         //GameDirector取得
@@ -29,6 +32,21 @@ public class Switch : Gimick_Mane
     void Update()
     {
         //表世界・裏世界どちらかで出現
-        Existence_Change(Change_Switch, ExistenceOrShadow,gameDirector.GetComponent<StageMovement>().FrontOrBack);
+        Existence_Change(Change_Switch, ExistenceOrShadow, gameDirector.GetComponent<StageMovement>().FrontOrBack);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //プレイヤーが触れたとき
+        if (other.CompareTag("Player"))
+        {
+            //対応した壁を消す
+            Guard_Wall.SetActive(false);
+            //***************
+
+            //スイッチ自身も消す
+            gameObject.SetActive(false);
+            //******************
+        }
     }
 }

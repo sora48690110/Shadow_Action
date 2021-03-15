@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 236028130840734612}
   - component: {fileID: 42577010388203027}
+  - component: {fileID: 3142421643969173569}
   m_Layer: 0
   m_Name: Switch
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 174692903293199616}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.83, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3631459600274281721}
@@ -45,7 +46,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ExistenceOrShadow: 1
-  Existence_Switch: {fileID: 1090764245832208454}
+  Change_Switch: {fileID: 1090764245832208454}
+  Guard_Wall: {fileID: 0}
+--- !u!135 &3142421643969173569
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174692903293199616}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1090764245832208454
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +150,7 @@ SphereCollider:
   m_GameObject: {fileID: 1090764245832208454}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}

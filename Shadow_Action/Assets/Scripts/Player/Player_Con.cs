@@ -117,6 +117,7 @@ public class Player_Con : MonoBehaviour
     //******************
 
 
+    //死亡処理
     private void Chara_Death()
     {
         Debug.Log("死亡");
@@ -126,7 +127,7 @@ public class Player_Con : MonoBehaviour
 
 
         //保存座標をリトライ位置に変更
-        Save_Pos = new Vector3(0, 0, 0);
+        Save_Pos = new Vector3(0, -5, 0);
         //****************************
 
 
@@ -136,6 +137,17 @@ public class Player_Con : MonoBehaviour
         //**************
 
 
+    }
+
+    //クリア処理
+    void Chara_Clear()
+    {
+        //リザルトUI表示
+        //互いに参照しあっている為、いい方法がないか検討中
+        result_Canvas.GetComponent<Result_UI>().Active_Result("Game Clear");
+        //保存座標をスタート位置に変更
+        Save_Pos = new Vector3(0, -5, 0);
+        //****************************
     }
 
 
@@ -187,6 +199,14 @@ public class Player_Con : MonoBehaviour
         //許可された範囲内（本来影ができる場所の予定）であればすり抜け可能
         if (other.CompareTag("Change_Possible"))
             Transparent_Check = true;
+        //****************************************
+
+
+        //Clear_Flagに触れた場合
+        if (other.CompareTag("Clear_Flag"))
+        {
+            Chara_Clear();
+        }
         //****************************************
     }
 
