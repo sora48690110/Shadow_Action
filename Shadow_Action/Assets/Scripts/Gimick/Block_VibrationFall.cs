@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//振動する(未完)
-[RequireComponent(typeof(Rigidbody))]
-public class Block_Vibration : Gimick_Mane
+//振動して落下する(未完)
+public class Block_VibrationFall : Gimick_Mane
 {
 
     //[SerializeField] float vibration_Width;
@@ -15,20 +14,18 @@ public class Block_Vibration : Gimick_Mane
 
     void Start()
     {
+        //重力無効化
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
+        //**********
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Vibration(gameObject, gameObject.transform.position, vibration_Width, vibration_Speed);
-    }
 
     private void OnTriggerEnter(Collider other)
     {
+        //重力有効化
         if(other.CompareTag("Player"))
             rb.isKinematic = false;
-
+        //**********
     }
 }

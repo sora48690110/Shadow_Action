@@ -4,27 +4,28 @@ using UnityEngine;
 
 public class Switch : Gimick_Mane
 {
+
     //実体か影か
-    [SerializeField] private bool ExistenceOrShadow;
+    [SerializeField] private bool existenceOrShadow;
     //*********
 
-    [SerializeField] GameObject Change_Switch;
+
+    //スイッチ本体
+    [SerializeField] GameObject change_Switch;
+    //************
+
 
     //消したい壁
-    [SerializeField] GameObject Guard_Wall;
+    [SerializeField] GameObject guard_Wall;
+    //**********
 
-    GameObject gameDirector;
 
 
     void Start()
     {
-        //GameDirector取得
-        gameDirector = GameObject.Find("GameDirector");
-        //****************
-
         //裏世界のみの場合初期で非表示
-        if (!ExistenceOrShadow)
-            Change_Switch.SetActive(false);
+        if (!existenceOrShadow)
+            change_Switch.SetActive(false);
         //****************************
     }
 
@@ -32,8 +33,9 @@ public class Switch : Gimick_Mane
     void Update()
     {
         //表世界・裏世界どちらかで出現
-        Existence_Change(Change_Switch, ExistenceOrShadow, gameDirector.GetComponent<StageMovement>().FrontOrBack);
+        Existence_Change(change_Switch, existenceOrShadow, StageMovement.Instance.frontOrBack);
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -41,8 +43,9 @@ public class Switch : Gimick_Mane
         if (other.CompareTag("Player"))
         {
             //対応した壁を消す
-            Guard_Wall.SetActive(false);
+            guard_Wall.SetActive(false);
             //***************
+
 
             //スイッチ自身も消す
             gameObject.SetActive(false);

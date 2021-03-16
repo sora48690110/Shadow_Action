@@ -301,6 +301,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4988160713128648299, guid: d1684f9ec7e0809438f2f487ed9ca17e,
         type: 3}
+      propertyPath: jump_Force
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988160713128648299, guid: d1684f9ec7e0809438f2f487ed9ca17e,
+        type: 3}
       propertyPath: gameDirector
       value: 
       objectReference: {fileID: 1866014048}
@@ -596,6 +601,11 @@ PrefabInstance:
     - target: {fileID: 2984404198063778780, guid: 6f929bb2334b3114a9993b195b5c42bb,
         type: 3}
       propertyPath: Guard_Wall
+      value: 
+      objectReference: {fileID: 1347117915}
+    - target: {fileID: 2984404198063778780, guid: 6f929bb2334b3114a9993b195b5c42bb,
+        type: 3}
+      propertyPath: guard_Wall
       value: 
       objectReference: {fileID: 1347117915}
     - target: {fileID: 3079180163952227931, guid: 6f929bb2334b3114a9993b195b5c42bb,
@@ -989,10 +999,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d6b76de3961b04abff01efe8aa22b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FrontOrBack: 1
-  MainCamera: {fileID: 963194225}
-  DirectionalLight: {fileID: 705507993}
-  Back_Panel: {fileID: 519652871}
+  directionalLight: {fileID: 705507993}
+  back_Panel: {fileID: 519652871}
 --- !u!1001 &9028473021303296379
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,14 +10,14 @@ public class Title_Dire : MonoBehaviour
     //ゲームスタート
     public void Game_Start()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("GameScene");
     }
-    //**************
+
 
     //ゲーム終了
     public void Game_End()
     {
         Application.Quit();
     }
-    //*********
+
 }

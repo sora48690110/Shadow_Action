@@ -6,15 +6,13 @@ using UnityEngine;
 //ギミックの元締め
 public class Gimick_Mane : MonoBehaviour
 {
-    //移動量
+
+    //移動量&向き
     private int amount;
-    //******
-
-    //向き
     private int direction = 1;
-    //****
+    //***********
 
-    
+
     //表世界・裏世界どちらかで出現させる
     public void Existence_Change(GameObject gameObject, bool flag,bool FrontOrBack)
     {
@@ -24,7 +22,6 @@ public class Gimick_Mane : MonoBehaviour
             gameObject.SetActive(!FrontOrBack);
 
     }
-    //***********************************
 
 
     //反復移動
@@ -34,9 +31,11 @@ public class Gimick_Mane : MonoBehaviour
         amount += 1;
         //**************
 
+
         //位置更新
         gameObject.transform.Translate(direction * vec * Time.deltaTime);
         //********
+
 
         //リセットして反転
         if (amount % width == 0)
@@ -46,7 +45,6 @@ public class Gimick_Mane : MonoBehaviour
         }
         //****************
     }
-    //********
 
 
     //回転
@@ -54,14 +52,11 @@ public class Gimick_Mane : MonoBehaviour
     {
         gameObject.transform.Rotate(direction_Amount);
     }
-    //****
 
 
-    //振動する(未完成)
+    //振動(未完成)
     public void Vibration(GameObject gameObject,Vector3 pos,float width,float speed)
     {
         gameObject.transform.position = pos + new Vector3(Mathf.Sin(Time.deltaTime * speed) * width, 0, 0);
     }
-
-
 }

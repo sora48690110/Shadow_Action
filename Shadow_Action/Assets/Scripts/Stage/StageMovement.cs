@@ -1,78 +1,91 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 //表世界・裏世界間の移動処理
-public class StageMovement : MonoBehaviour
+public class StageMovement : SingletonMonoBehaviour<StageMovement>
 {
     //表世界・裏世界判別用（デフォルト・表）
     //リザルト時参照するためpublic
-    public bool FrontOrBack = true;
+    public bool frontOrBack { get; private set; }
     //*************************************
+
 
     //カメラの向きと座標調整用
 
     //表世界用
-    Quaternion Front_Rotation = new Quaternion(0, 0, 0, 1);
-    Vector3 Front_Pos = new Vector3(0, 1, -20);
+    Quaternion front_Rot = new Quaternion(0, 0, 0, 0);
+    Vector3 front_Pos = new Vector3(0, 1, -20);
     //********
 
     //裏世界用
-    Quaternion Back_Rotation = new Quaternion(-1, 0, 0, 0);
-    Vector3 Back_Pos = new Vector3(0,1, 20);
+    Quaternion back_Rot = new Quaternion(-1, 0, 0, 0);
+    Vector3 back_Pos = new Vector3(0,1, 20);
     //********
 
+    //************************
+
+
     //それぞれ参照用
-    [SerializeField] GameObject MainCamera;
-    [SerializeField] GameObject DirectionalLight;
-    [SerializeField] GameObject Back_Panel;
+    [SerializeField] GameObject directionalLight;
+    [SerializeField] GameObject back_Panel;
     //**************
+
+
+    private void Start()
+    {
+        frontOrBack = true;
+    }
 
 
     //ステージ切り替え
     public void Change_Stage()
     {
         //表世界・裏世界判別
-        FrontOrBack = !FrontOrBack;
+        frontOrBack = !frontOrBack;
         //******************
 
 
-        switch (FrontOrBack)
+        switch (frontOrBack)
         {
             //表世界だった場合
             case true:
                 //カメラの向き調整
-                MainCamera.transform.SetPositionAndRotation(Front_Pos, Front_Rotation);
+                Camera.main.transform.SetPositionAndRotation(front_Pos, front_Rot);
                 //****************
 
+
                 //ライトON
-                DirectionalLight.SetActive(true);
+                directionalLight.SetActive(true);
                 //********
 
+
                 //暗くするためのパネルOFF
-                Back_Panel.SetActive(false);
+                back_Panel.SetActive(false);
                 //***********************
 
                 break;
+
             //裏世界だった場合
             case false:
                 //カメラの向き調整
-                MainCamera.transform.SetPositionAndRotation(Back_Pos, Back_Rotation);
+                Camera.main.transform.SetPositionAndRotation(back_Pos, back_Rot);
                 //****************
 
+
                 //ライトOFF
-                DirectionalLight.SetActive(false);
+                directionalLight.SetActive(false);
                 //********
 
+
                 //暗くするためのパネルON
-                Back_Panel.SetActive(true);
+                back_Panel.SetActive(true);
                 //***********************
 
                 break;
+
             default:
                 break;
         }
     }
-    //******************
 }

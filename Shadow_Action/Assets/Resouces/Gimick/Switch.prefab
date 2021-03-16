@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 715867fbf9d16dd41a0b62a4f07f492f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExistenceOrShadow: 1
-  Change_Switch: {fileID: 1090764245832208454}
-  Guard_Wall: {fileID: 0}
+  existenceOrShadow: 0
+  change_Switch: {fileID: 1090764245832208454}
+  guard_Wall: {fileID: 1090764245832208454}
 --- !u!135 &3142421643969173569
 SphereCollider:
   m_ObjectHideFlags: 0
