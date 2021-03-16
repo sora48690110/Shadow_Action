@@ -19,6 +19,7 @@ TagManager:
   - Player
   - Existence
   - Shadow
+  - Floor
   - 
   - 
   - 
@@ -38,8 +39,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - BackGround
   m_SortingLayers:
   - name: Default
     uniqueID: 0

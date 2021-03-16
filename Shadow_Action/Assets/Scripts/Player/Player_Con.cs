@@ -6,44 +6,55 @@ using UnityEngine;
 public class Player_Con : MonoBehaviour
 {
     //プレイヤー移動量計算用
-    float Movement = new float();
+    [SerializeField] float speed;
+    [SerializeField] int Jump_Force;
+    float moveX;
     //**********************
 
 
-    //リトライ座標保存用
-    float Retry_Movement;
-    //******************
-
-
-    //表世界・裏世界切替時座標保存用
+    //世界渡り時座標同期用
     Vector3 Save_Pos;
-    //******************************
-
-
-    //すり抜け可能判定用
-    bool Transparent_Check;
-    //******************
+    //********************
 
 
     //接地判定用
-    bool Ground_Check;
+    [SerializeField] bool Ground_Check;
+    Ray ground_Ray;
     //**********
 
 
+    //すり抜け可能判定用
+    [SerializeField] bool Transparent_Check;
+    Ray transparent_Ray;
+    //******************
+
+
+    //それぞれ参照用
     Rigidbody rb;
     BoxCollider bc;
-
-
     [SerializeField] GameObject gameDirector;
     [SerializeField] GameObject result_Canvas;
-    [SerializeField] int Jump_Force;
+    [SerializeField] GameObject player_Nose;
+    //**************
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         bc = GetComponent<BoxCollider>();
-        Retry_Movement = 0;
     }
 
+    private void FixedUpdate()
+    {
+        //移動   
+        if (moveX != 0)
+            Chara_Move(moveX);
+
+        //接地判定
+        Chara_Grounded();
+
+        //すり抜け判定
+        Chara_Transparent();
+    }
 
     private void Update()
     {
@@ -52,20 +63,10 @@ public class Player_Con : MonoBehaviour
             return;
         //******************************
 
-        //左移動
-        if (Input.GetKey(KeyCode.A))
-        {
-            Movement -= 0.01f;
-            Chara_Move(Movement,-1);
-        }
+        //移動量計測
+        moveX = Input.GetAxis("Horizontal") * speed;
 
-        //右移動
-        if (Input.GetKey(KeyCode.D))
-        {
-            Movement += 0.01f;
-            Chara_Move(Movement, 0);
-        }
-
+        
         //ジャンプ
         if (Input.GetKeyDown(KeyCode.Space) && Ground_Check)
         {
@@ -77,36 +78,32 @@ public class Player_Con : MonoBehaviour
         {
 
             //すり抜ける前の位置保存
-            Save_Pos = gameObject.transform.position;
+            Save_Pos = transform.position;
             //**********************
 
             //BoxCollider無効化
             bc.enabled = false;
+            player_Nose.GetComponent<BoxCollider>().enabled = false;
             //*****************
 
-            //ジャンプ無効化
-            Ground_Check = false;
-            //**************
         }
-        //ギミックにはじかれた際にずれない用
-        Movement = gameObject.transform.position.x;
-        //**********************************
-    }
 
+    }
 
 
     //プレイヤー左右移動
-    private void Chara_Move(float movement,int Direction)
+    private void Chara_Move(float movement)
     {
-        //1文を短くするためのもの
-        Vector3 Player_Pos= new Vector3(movement, gameObject.transform.position.y, 0);
-        Quaternion Player_Rot= new Quaternion(0, Direction, 0, 0);
-        //**********************
+        //向き修正
+        if (movement < 0) transform.rotation = new Quaternion(0, -1, 0, 0);
+        else transform.rotation = new Quaternion(0, 0, 0, 0);
+        //********
 
-
-        gameObject.transform.SetPositionAndRotation(Player_Pos, Player_Rot);
+        //接地しているとき
+        if(Ground_Check)
+        rb.velocity = new Vector3(movement, rb.velocity.y, 0);
+        //*********
     }
-    //******************
 
 
     //プレイヤージャンプ
@@ -114,49 +111,69 @@ public class Player_Con : MonoBehaviour
     {
         rb.AddForce(transform.up * jump_Force);
     }
-    //******************
+
+
+    //プレイヤー接地判定
+    private void Chara_Grounded()
+    {
+        //下方向にRayを飛ばして代入
+        ground_Ray = new Ray(transform.position + 0.01f * transform.up, -transform.up);
+        Ground_Check = Physics.SphereCast(ground_Ray, 0.375f, 0.2f);
+        //*************************
+    }
+
+
+    //プレイヤー世界渡り判定
+    private void Chara_Transparent()
+    {
+        //下方向にRayを飛ばして代入
+        transparent_Ray = new Ray(transform.position + 0.01f * transform.up, -transform.up);
+        Transparent_Check = Physics.SphereCast(transparent_Ray, 0.2f, 0.2f, LayerMask.GetMask("Floor"));
+        //*************************
+    }
 
 
     //死亡処理
     private void Chara_Death()
     {
-        Debug.Log("死亡");
-        //移動量をリトライ位置に変更
-        Movement = Retry_Movement;
-        //**************************
-
 
         //保存座標をリトライ位置に変更
         Save_Pos = new Vector3(0, -5, 0);
         //****************************
 
 
+        //移動量初期化
+        rb.velocity = new Vector3(0, 0, 0);
+        //************
+
+
         //リザルトUI表示
         //互いに参照しあっている為、いい方法がないか検討中
-        result_Canvas.GetComponent<Result_UI>().Active_Result("Game Over");
+        if (result_Canvas != null)
+            result_Canvas.GetComponent<Result_UI>().Active_Result("Game Over");
         //**************
-
-
     }
 
+
     //クリア処理
-    void Chara_Clear()
+    private void Game_Clear()
     {
         //リザルトUI表示
         //互いに参照しあっている為、いい方法がないか検討中
-        result_Canvas.GetComponent<Result_UI>().Active_Result("Game Clear");
+        if (result_Canvas != null)
+            result_Canvas.GetComponent<Result_UI>().Active_Result("Game Clear");
         //保存座標をスタート位置に変更
         Save_Pos = new Vector3(0, -5, 0);
         //****************************
     }
 
 
-    //表世界・裏世界の移動時位置同期
-    public void Player_Pos()
+    //世界渡り時位置同期
+    //Result_Uiで参照
+    public void Chara_PosSync()
     {
-        gameObject.transform.position = Save_Pos;
+        transform.position = Save_Pos;
     }
-    //********************
 
 
     //カメラの範囲外に出た場合一度だけ実行
@@ -165,66 +182,36 @@ public class Player_Con : MonoBehaviour
 
         //BoxCollider有効化
         bc.enabled = true;
+        player_Nose.GetComponent<BoxCollider>().enabled = true;
         //*****************
 
-
-        //すり抜け不可状態で接地していないとき死亡判定
-        if (!Transparent_Check && !Ground_Check)
-            Chara_Death();
-        //********************************************
-
-        //死亡判定じゃないとき
-        //表世界・裏世界切り替え(カメラ反転させてるだけ)
         //実行終了時に出るエラーを防ぐためnullチェック
-        else if (gameDirector != null)
+        if (gameDirector != null)
         {
-            gameDirector.GetComponent<StageMovement>().Change_Stage();
-            //********************************************
+            //範囲外にでたときにレイヤー(Floor)と重なっていたら世界渡り
+            if (Physics.CheckSphere(transform.position, 0.375f, LayerMask.GetMask("Floor")))
+            {
+                //世界渡り(カメラ反転させてるだけ)
+                gameDirector.GetComponent<StageMovement>().Change_Stage();
+                //********************************************
 
 
-            //プレイヤーの位置修正
-            Player_Pos();
-            //********************
+                //プレイヤーの位置修正
+                Chara_PosSync();
+                //********************
+            }
+            //重なっていなかったら死亡判定
+            else Chara_Death();
         }
     }
+
 
     //トリガー接触時
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        //何であれ接地すればジャンプ可能
-        Ground_Check = true;
-        //******************************
-
-
-        //許可された範囲内（本来影ができる場所の予定）であればすり抜け可能
-        if (other.CompareTag("Change_Possible"))
-            Transparent_Check = true;
-        //****************************************
-
-
         //Clear_Flagに触れた場合
         if (other.CompareTag("Clear_Flag"))
-        {
-            Chara_Clear();
-        }
+            Game_Clear();
         //****************************************
-    }
-
-
-    //トリガー離脱時
-    private void OnTriggerExit(Collider other)
-    {
-
-        //何であれ離れればジャンプ不可
-        Ground_Check = false;
-        //******************************
-
-
-        //許可された範囲内（本来影ができる場所の予定）から離れた場合すり抜け不可
-        if (other.CompareTag("Change_Possible"))
-            Transparent_Check = false;
-        //***************************************
-
-
     }
 }

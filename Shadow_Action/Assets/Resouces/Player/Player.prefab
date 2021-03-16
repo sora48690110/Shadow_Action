@@ -138,10 +138,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a23d2d06bce44a4a918d9fff5144223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 3
   Transparent_Check: 0
   Ground_Check: 0
-  gameDirector: {fileID: 0}
   Jump_Force: 0
+  gameDirector: {fileID: 0}
+  result_Canvas: {fileID: 0}
+  player_Nose: {fileID: 8732310824638799981}
 --- !u!1 &8732310824638799981
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +156,7 @@ GameObject:
   - component: {fileID: 5880994573430177575}
   - component: {fileID: 6471732234065957618}
   - component: {fileID: 2791794498561365689}
-  - component: {fileID: 6060411742669854189}
+  - component: {fileID: 2031086258226472037}
   m_Layer: 8
   m_Name: Nose
   m_TagString: Untagged
@@ -222,8 +225,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &6060411742669854189
-CapsuleCollider:
+--- !u!65 &2031086258226472037
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -231,8 +234,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 8732310824638799981}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 0.1, z: 2}
+  m_Center: {x: 0, y: -0.35, z: 0}

@@ -42,7 +42,7 @@ public class Result_UI : MonoBehaviour
 
 
         //プレイヤーの位置をリトライ位置に戻す
-        player.GetComponent<Player_Con>().Player_Pos();
+        player.GetComponent<Player_Con>().Chara_PosSync();
         //***********************************
 
 
