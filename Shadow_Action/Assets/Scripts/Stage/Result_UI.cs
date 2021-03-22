@@ -41,25 +41,31 @@ public class Result_UI : MonoBehaviour
     public void Game_Retry()
     {
 
-        //裏世界だった場合表世界に戻す
-        if (!StageMovement.Instance.frontOrBack)
-            StageMovement.Instance.Change_Stage();
-        //****************************
+        ////裏世界だった場合表世界に戻す
+        //if (!StageMovement.Instance.frontOrBack)
+        //    StageMovement.Instance.Change_Stage();
+        ////****************************
 
 
-        //プレイヤーの位置をリトライ位置に戻す
-        player.GetComponent<Player_Con>().Chara_PosSync();
-        //***********************************
+        ////プレイヤーの位置をリトライ位置に戻す
+        //player.GetComponent<Player_Con>().Chara_PosSync();
+        ////***********************************
 
 
-        //リザルトUI非表示
-        result_Panel.SetActive(false);
-        //****************
+        ////リザルトUI非表示
+        //result_Panel.SetActive(false);
+        ////****************
 
 
         //時を戻す
         Time.timeScale = 1;
         //********
+
+
+        //現状中間地点がないためシーンを再読み込み
+        Scene load_Scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(load_Scene.name);
+        //****************************************
 
     }
 

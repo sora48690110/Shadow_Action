@@ -7,7 +7,7 @@ public class Block_Iteration : Gimick_Mane
 {
 
     //移動幅
-    [SerializeField] private int width;
+    [SerializeField] private float limit_Time;
     //******
 
 
@@ -28,17 +28,17 @@ public class Block_Iteration : Gimick_Mane
 
         //上下
         if (up)
-            Iteration(gameObject, width, Vector3.up);
+            Iteration(gameObject, limit_Time, Vector3.up);
 
 
         //右(斜め用に二つ用意)
-        if(right)
-            Iteration(gameObject, width, Vector3.right);
+        if (right)
+            Iteration(gameObject, limit_Time, Vector3.right);
 
 
         //左(斜め用に二つ用意)
         if (left)
-            Iteration(gameObject, width, -Vector3.right);
+            Iteration(gameObject, limit_Time, -Vector3.right);
 
     }
 }

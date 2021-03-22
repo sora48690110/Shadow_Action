@@ -6,34 +6,35 @@ using UnityEngine;
 public class Player_Con : MonoBehaviour
 {
     //プレイヤー移動量計算用
-    [SerializeField] float speed;
-    [SerializeField] int jump_Force;
-    float moveX;
+    [SerializeField]private float speed;
+    [SerializeField] private int jump_Force;
+    [SerializeField] private int fall_Force;
+    private float moveX;
     //**********************
 
 
     //世界渡り時座標同期用
-    Vector3 save_Pos;
+    private Vector3 save_Pos;
     //********************
 
 
     //接地判定用
-    [SerializeField] bool ground_Check;
-    Ray ground_Ray;
+    [SerializeField]private bool ground_Check;
+    private Ray ground_Ray;
     //**********
 
 
     //すり抜け可能判定用
-    [SerializeField] bool transparent_Check;
-    Ray transparent_Ray;
+    [SerializeField]private bool transparent_Check;
+    private Ray transparent_Ray;
     //******************
 
 
     //それぞれ参照用
-    Rigidbody rb;
-    BoxCollider bc;
-    [SerializeField] GameObject result_Canvas;
-    [SerializeField] GameObject player_Nose;
+    [SerializeField]private GameObject result_Canvas;
+    [SerializeField]private GameObject player_Nose;
+    private Rigidbody rb;
+    private BoxCollider bc;
     //**************
 
 
@@ -75,6 +76,7 @@ public class Player_Con : MonoBehaviour
             Chara_Jump(jump_Force);
         }
 
+
         //すり抜け
         if (Input.GetKeyDown(KeyCode.LeftControl) && transparent_Check)
         {
@@ -112,7 +114,16 @@ public class Player_Con : MonoBehaviour
     private void Chara_Jump(float jump_Force)
     {
         rb.AddForce(transform.up * jump_Force);
+        Invoke("Chara_UnJump", 0.5f);
     }
+
+
+    //プレイヤージャンプ
+    private void Chara_UnJump()
+    {
+        rb.AddForce(transform.up * fall_Force);
+    }
+
 
 
     //プレイヤー接地判定

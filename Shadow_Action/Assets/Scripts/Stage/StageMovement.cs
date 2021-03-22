@@ -14,21 +14,21 @@ public class StageMovement : SingletonMonoBehaviour<StageMovement>
     //カメラの向きと座標調整用
 
     //表世界用
-    Quaternion front_Rot = new Quaternion(0, 0, 0, 0);
-    Vector3 front_Pos = new Vector3(0, 1, -20);
-    //********
+    private Quaternion front_Rot = new Quaternion(0, 0, 0, 0);
+    private Vector3 front_Pos = new Vector3(0, 1, -20);
+    //++++++++
 
     //裏世界用
-    Quaternion back_Rot = new Quaternion(-1, 0, 0, 0);
-    Vector3 back_Pos = new Vector3(0,1, 20);
-    //********
+    private Quaternion back_Rot = new Quaternion(-1, 0, 0, 0);
+    private Vector3 back_Pos = new Vector3(0,1, 20);
+    //++++++++
 
     //************************
 
 
     //それぞれ参照用
-    [SerializeField] GameObject directionalLight;
-    [SerializeField] GameObject back_Panel;
+    [SerializeField]private GameObject directionalLight;
+    [SerializeField]private GameObject back_Panel;
     //**************
 
 

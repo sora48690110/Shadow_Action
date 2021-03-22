@@ -139,10 +139,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  Transparent_Check: 0
-  Ground_Check: 0
-  Jump_Force: 0
-  gameDirector: {fileID: 0}
+  jump_Force: 350
+  fall_Force: -300
+  ground_Check: 0
+  transparent_Check: 0
   result_Canvas: {fileID: 0}
   player_Nose: {fileID: 8732310824638799981}
 --- !u!1 &8732310824638799981

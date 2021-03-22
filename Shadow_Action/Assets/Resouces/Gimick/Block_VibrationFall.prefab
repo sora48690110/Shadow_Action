@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9147741836423500631}
   - component: {fileID: 6716209762710755873}
   - component: {fileID: 6425961839038508638}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: Block_VibrationFall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,3 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ef366372dacb7419f80dfa01ccaa1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vibration_Width: 20
+  vibration_Speed: 1
+  limit_Time: 1.5

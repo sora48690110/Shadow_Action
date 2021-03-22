@@ -7,12 +7,6 @@ using UnityEngine;
 public class Gimick_Mane : MonoBehaviour
 {
 
-    //移動量&向き
-    private int amount;
-    private int direction = 1;
-    //***********
-
-
     //表世界・裏世界どちらかで出現させる
     public void Existence_Change(GameObject gameObject, bool flag,bool FrontOrBack)
     {
@@ -24,11 +18,17 @@ public class Gimick_Mane : MonoBehaviour
     }
 
 
+    //移動量&向き
+    private float amount;
+    private int direction = 1;
+    //***********
+
+
     //反復移動
-    public void Iteration(GameObject gameObject,int width, Vector3 vec)
+    public void Iteration(GameObject gameObject,float limit_Time, Vector3 vec)
     {
-        //移動量カウント
-        amount += 1;
+        //移動時間カウント
+        amount += Time.deltaTime;
         //**************
 
 
@@ -38,7 +38,7 @@ public class Gimick_Mane : MonoBehaviour
 
 
         //リセットして反転
-        if (amount % width == 0)
+        if (amount > limit_Time)
         {
             amount = 0;
             direction *= -1;
@@ -54,7 +54,8 @@ public class Gimick_Mane : MonoBehaviour
     }
 
 
-    //振動(未完成)
+    //振動(レイヤーをvibrationに変えるのを忘れずに)
+    //あまり振動しているようには見えない
     public void Vibration(GameObject gameObject,Vector3 pos,float width,float speed)
     {
         gameObject.transform.position = pos + new Vector3(Mathf.Sin(Time.deltaTime * speed) * width, 0, 0);
